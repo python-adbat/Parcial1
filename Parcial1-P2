@@ -1,0 +1,103 @@
+-- Crear base de datos
+CREATE DATABASE IF NOT EXISTS punto_de_venta;
+USE punto_de_venta;
+
+-- Tabla Tamaño
+CREATE TABLE Tamaño (
+    tamaño_id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_tamaño VARCHAR(255),
+    clasificacion VARCHAR(255),
+    peso ENUM('ligero', 'medio', 'pesado'),
+    volumen ENUM('pequeño', 'mediano', 'grande')
+);
+
+-- Tabla Producto
+CREATE TABLE Producto (
+    producto_id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_producto VARCHAR(255),
+    otros_datos TEXT,
+    ubicacion ENUM('bodega', 'estante', 'otro'),
+    disponibilidad ENUM('si', 'no'),
+    tamaño_id INT,
+    FOREIGN KEY (tamaño_id) REFERENCES Tamaño(tamaño_id)
+);
+
+-- Tabla Categorias_Producto
+CREATE TABLE Categorias_Producto (
+    categoria_id INT AUTO_INCREMENT PRIMARY KEY,
+    producto_id INT,
+    FOREIGN KEY (producto_id) REFERENCES Producto(producto_id)
+);
+
+-- Tabla Colores_Producto
+CREATE TABLE Colores_Producto (
+    color_id INT AUTO_INCREMENT PRIMARY KEY,
+    producto_id INT,
+    FOREIGN KEY (producto_id) REFERENCES Producto(producto_id)
+);
+
+-- Tabla Color
+CREATE TABLE Color (
+    color_id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_color VARCHAR(255),
+    nombre_color VARCHAR(255),
+    tipo_color ENUM('primario', 'secundario', 'terciario'),
+    cantidad_disponible ENUM('poca', 'mediana', 'mucha')
+);
+
+-- Tabla Categorias
+CREATE TABLE Categorias (
+    categoria_id INT AUTO_INCREMENT PRIMARY KEY,
+    categoria_principal VARCHAR(255),
+    nombre_categoria VARCHAR(255),
+    descripcion ENUM('pintura para exteriores', 'pintura para interiores', 'pintura para pisos', 'otros'),
+    estado ENUM('activo', 'inactivo')
+);
+
+-- Insertar registros en la tabla Tamaño
+INSERT INTO Tamaño (codigo_tamaño, clasificacion, peso, volumen) VALUES
+('T1', 'Pequeño', 'ligero', 'pequeño'),
+('T2', 'Mediano', 'medio', 'mediano'),
+('T3', 'Grande', 'pesado', 'grande'),
+('T4', 'Extra Grande', 'pesado', 'grande'),
+('T5', 'Pequeño', 'ligero', 'pequeño');
+
+-- Insertar registros en la tabla Producto
+INSERT INTO Producto (nombre_producto, otros_datos, ubicacion, disponibilidad, tamaño_id) VALUES
+('Pintura Lanco', 'Mate', 'bodega', 'si', 6),
+('Pintura Pintuco', 'Satinada', 'estante', 'si', 7),
+('Pintura Gliden', 'Para Pisos', 'otro', 'no', 8),
+('Brochas', '6pkt', 'bodega', 'si', 9),
+('aguarras', 'quita pintura', 'estante', 'si', 10);
+
+-- Insertar registros en la tabla Categorias_Producto
+INSERT INTO Categorias_Producto (producto_id) VALUES
+(21),
+(22),
+(23),
+(24),
+(25);
+
+-- Insertar registros en la tabla Colores_Producto
+INSERT INTO Colores_Producto (producto_id) VALUES
+(21),
+(22),
+(23),
+(24),
+(25);
+
+-- Insertar registros en la tabla Color
+INSERT INTO Color (codigo_color, nombre_color, tipo_color, cantidad_disponible) VALUES
+('FF0000', 'Rojo', 'primario', 'mucha'),
+('0000ff ', 'Azul', 'primario', 'mediana'),
+('008f39 ', 'Verde', 'secundario', 'poca'),
+('FFD300', 'Amarillo', 'primario', 'mucha'),
+('FFFFFF', 'Blanco', 'secundario', 'mediana');
+
+-- Insertar registros en la tabla Categorias
+INSERT INTO Categorias (categoria_principal, nombre_categoria, descripcion, estado) VALUES
+('Pinturas', 'Exteriores', 'pintura para exteriores', 'activo'),
+('Pinturas', 'Interiores', 'pintura para interiores', 'activo'),
+('Pinturas', 'Pisos', 'pintura para pisos', 'inactivo'),
+('Pinturas', 'Accesorios', 'otros', 'activo'),
+('Pinturas', 'Removedores', 'otros', 'inactivo');
